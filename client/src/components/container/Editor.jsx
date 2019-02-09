@@ -32,13 +32,13 @@ class Editor extends Component {
     }
     
     editorDidMount = (editor, monaco) => {
-        console.log('editorDidMount', editor);
+        //console.log('editorDidMount', editor);
         editor.focus();
         this.setState({editor, answer: Input})
     }
 
     diffDidMount = (editor, monaco) => {
-        console.log('diffDidMount', editor);
+        //console.log('diffDidMount', editor);
         editor.focus();
     }
     
@@ -90,7 +90,7 @@ class Editor extends Component {
                         editorDidMount={this.editorDidMount}
                     />
                     <div className={classes.button}>
-                        <EditorButtons handleSubmit={this.handleSubmit}/>
+                        <EditorButtons handleSubmit={this.handleSubmit} showAnswer={this.showAnswer}/>
                     </div>
                 </Grid>
                 <Grid item xs={12} className={classes.diffWrapper}>

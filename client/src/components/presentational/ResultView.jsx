@@ -2,8 +2,7 @@ import React from "react";
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Submit from './Submit';
-import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
+import solc from '../../utils/getSolc';
 
 const styles = theme => ({
     text: {
@@ -12,8 +11,28 @@ const styles = theme => ({
 })
 
 const ResultView = props => {
-    const { classes, isCorrect, saveAchievement} = props;
+    const { classes, isCorrect, saveAchievement, code} = props;
 
+    var input = {
+        language: 'Solidity',
+        sources: {
+            'test.sol': {
+                content: code
+            }
+        },
+        settings: {
+            outputSelection: {
+                '*': {
+                    '*': [ '*' ]
+                }
+            }
+        }
+    }
+    
+    var output = JSON.parse(solc.compile(JSON.stringify(input)))
+    
+    console.log(output);
+    
     return(
         <div style={{display:isCorrect === null ? 'none':'block'}}>
             <Typography component='p' className={classes.text} style={{display:isCorrect ? 'none':'block'}}>

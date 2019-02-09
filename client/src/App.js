@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Editor from "./components/container/Editor";
 import Input from './components/container/Input';
 import ResultView from './components/presentational/ResultView';
+import SimpleStorageCode from './code/SimpleStorageCode';
 
 import "./App.css";
 
@@ -99,7 +100,8 @@ class App extends Component {
                     <Paper className={classes.boxCommon}>
                         <ResultView 
                             isCorrect={this.state.isCorrect}
-                            saveAchievement={this.saveAchievement}/>
+                            saveAchievement={this.saveAchievement}
+                            code={SimpleStorageCode}/>
                     </Paper>
                 </Grid>
             </Grid>
