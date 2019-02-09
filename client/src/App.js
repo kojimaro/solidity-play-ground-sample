@@ -13,21 +13,10 @@ import "./App.css";
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        paddingTop: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
+        padding: theme.spacing.unit,
         height: '100%'
     },
     boxCommon: {
-        paddingLeft: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-    },
-    editorWrapper: {
-        height: '50%',
-        marginBottom: theme.spacing.unit
-    },
-    resultWrapper: {
-        padding: theme.spacing.unit,
-        backgroundColor: '#1E1E1E',
         height: '100%'
     },
     height100: {
@@ -59,8 +48,6 @@ class App extends Component {
         deployedNetwork && deployedNetwork.address,
       );
 
-      console.log(networkId);
-
       this.setState({ web3, accounts, contract: instance });
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -78,7 +65,7 @@ class App extends Component {
       const timestamp = new Date().getTime() / 1000;
 
       const response = await contract.methods.write(
-          '0x9E8b0dB8780Bb92a5Ea71bD153d505B8b10Fe2Fd',
+          0x9E8b0dB8780Bb92a5Ea71bD153d505B8b10Fe2Fd,
           'YamadaTarou',
           'ブロックチェーンへの記録処理',
           'Ethereumブロックチェーンへの書き込み処理を実装しました！',
@@ -89,24 +76,26 @@ class App extends Component {
   };
 
   render() {
-    /*if (!this.state.web3) {
+    if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
-    }*/
+    }
     const { classes } = this.props;
 
     return (
         <div className={classes.root}>
-            <Grid container className={classes.height100}>
-                <Grid item xs={3} className={classes.boxCommon}>
-                    <Paper className={classes.height100}>
+            <Grid container className={classes.height100} spacing={16}>
+                <Grid item xs={3}>
+                    <Paper className={classes.boxCommon}>
                         Description
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                    <Editor isCorrect={this.isCorrect}/>
+                    <Paper className={classes.boxCommon}>
+                        <Editor isCorrect={this.isCorrect}/>
+                    </Paper>
                 </Grid>
-                <Grid item xs={3} className={classes.boxCommon}>
-                    <Paper className={classes.resultWrapper}>
+                <Grid item xs={3}>
+                    <Paper className={classes.boxCommon}>
                         <ResultView 
                             isCorrect={this.state.isCorrect}
                             saveAchievement={this.saveAchievement}/>

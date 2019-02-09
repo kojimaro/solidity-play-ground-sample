@@ -4,13 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Submit from './Submit';
 
 const styles = theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'centar',
-    },
     text: {
-        color: '#fff'
+        color: '#000'
     }
 })
 
@@ -18,7 +13,7 @@ const ResultView = props => {
     const { classes, isCorrect, saveAchievement} = props;
 
     return(
-        <div className={classes.root} style={{display:isCorrect === null ? 'none':'block'}}>
+        <div style={{display:isCorrect === null ? 'none':'block'}}>
             <Typography variant="h5" className={classes.text} style={{display:isCorrect ? 'none':'block'}}>
                 > 不正解です！
             </Typography>
