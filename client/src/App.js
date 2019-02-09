@@ -6,6 +6,7 @@ import './components/container/Editor';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Editor from "./components/container/Editor";
+import Input from './components/container/Input';
 import ResultView from './components/presentational/ResultView';
 
 import "./App.css";
@@ -84,12 +85,12 @@ class App extends Component {
     return (
         <div className={classes.root}>
             <Grid container className={classes.height100} spacing={16}>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <Paper className={classes.boxCommon}>
-                        Description
+                        <Input/>
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                     <Paper className={classes.boxCommon}>
                         <Editor isCorrect={this.isCorrect}/>
                     </Paper>

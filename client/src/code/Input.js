@@ -8,7 +8,6 @@ const Input =[
     '   function set(uint x) public {',
     '      storedData = x;',
     '   }',
-    '',
     '}'
 ].join('\n');
 
