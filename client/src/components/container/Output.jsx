@@ -9,15 +9,16 @@ const styles = theme => ({
 
 class Output extends Component {
     state = {
-        web3ProviderEndpoint: 'http://127.0.0.1:7545'
+        rpcUrl: 'http://127.0.0.1:7545'
     }
 
     handleChange = event => {
-        this.setState({web3ProviderEndpoint: event.target.value})
+        if(event.target.value.match(/[\s\t]/)) return;
+        this.setState({rpcUrl: event.target.value})
     }
 
     handleSubmit = () => {
-
+        this.props.deploy(this.state.rpcUrl)
     }
 
     render(){
@@ -30,7 +31,7 @@ class Output extends Component {
                         handleChange={this.handleChange}
                         handleSubmit={this.handleSubmit}
                         isCorrect={isCorrect}
-                        web3ProviderEndpoint={this.state.web3ProviderEndpoint}/>
+                        rpcUrl={this.state.rpcUrl}/>
                 </Grid>
                 <Grid item xs={12}>
                     <ContractCard />

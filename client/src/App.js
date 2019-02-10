@@ -8,6 +8,7 @@ import Editor from "./components/container/Editor";
 import Input from './components/container/Input';
 import Output from './components/container/Output';
 import solc from './utils/getSolc';
+import { ethers } from 'ethers';
 
 import "./App.css";
 
@@ -30,7 +31,9 @@ class App extends Component {
         web3: null, 
         accounts: null, 
         contract: null,
-        isCorrect: null, 
+        isCorrect: null,
+        compiledCode: null,
+        deployedContractAddress: null
     };
 
   componentDidMount = async () => {
@@ -81,7 +84,32 @@ class App extends Component {
         }
         
         let output = JSON.parse(solc.compile(JSON.stringify(input)))
+        this.setState({compiledCode: output})
         console.log(output);
+    }
+
+    deploy = async(rpcUrl) => {
+        if(this.state.isCorrect !== true) return;
+        if(this.state.compiledCode === null) return;
+
+        const { contracts } = this.state.compiledCode;
+
+        try {
+            let provider = new ethers.providers.JsonRpcProvider(rpcUrl)
+            let accounts = await provider.listAccounts()
+            let signer = provider.getSigner(accounts[0])
+            let factory =  ethers.ContractFactory.fromSolidity(
+                contracts['test.sol'].SimpleStorage,
+                signer
+            );
+
+            const contract = await factory.deploy()
+            await contract.deployed()
+
+            this.setState({deployedContractAddress: contract.address})
+        } catch (error) {
+            alert(`Failed.`);
+        }
     }
 
   saveAchievement = async() => {
@@ -122,7 +150,9 @@ class App extends Component {
                 </Grid>
                 <Grid item xs={3}>
                     <div className={classes.boxCommon}>
-                        <Output isCorrect={this.state.isCorrect}/>
+                        <Output 
+                            isCorrect={this.state.isCorrect}
+                            deploy={this.deploy}/>
                     </div>
                 </Grid>
             </Grid>

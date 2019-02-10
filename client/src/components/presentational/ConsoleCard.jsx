@@ -19,7 +19,7 @@ const ConsoleCard = props => {
         handleChange,
         handleSubmit,
         isCorrect,
-        web3ProviderEndpoint
+        rpcUrl
     } = props;
 
     return(
@@ -38,7 +38,7 @@ const ConsoleCard = props => {
                             type='text'
                             label='Web3 Provider Endpoint'
                             id='web3-provider-endpoint'
-                            value={web3ProviderEndpoint}
+                            value={rpcUrl}
                             onChange={handleChange}
                             variant='outlined'
                             margin='normal'
