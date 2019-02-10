@@ -28,7 +28,7 @@ const styles = theme => ({
 class Editor extends Component {
     state = {
         editor: null,
-        answer: '',
+        answer: Input
     }
     
     editorDidMount = (editor, monaco) => {
@@ -51,15 +51,17 @@ class Editor extends Component {
     }
 
     handleSubmit = event => {
-        //console.log(this.state.editor.getValue())
         event.preventDefault();
-        if(this.state.editor.getValue() === SimpleStorageCode) {
-            console.log('OK!')
-            this.props.isCorrect(true)
-        } else {
-            this.setState({answer: this.state.editor.getValue()})
+
+        this.setState({answer: this.state.editor.getValue()})
+
+        if(this.state.editor.getValue() !== SimpleStorageCode) {
             this.props.isCorrect(false)
+            return;
         }
+
+        this.props.isCorrect(true)
+        this.props.compile(this.state.editor.getValue())
     }
 
     showAnswer = () => {
@@ -67,15 +69,10 @@ class Editor extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props
 
-        const options = {
-            selectOnLineNumbers: false
-        };
-
-        const diffOptions = {
-            renderSideBySide: false
-        }
+        const options = { selectOnLineNumbers: false}
+        const diffOptions = { renderSideBySide: false}
 
         return(
             <Grid container className={classes.height100}>
@@ -84,7 +81,7 @@ class Editor extends Component {
                         width="100%"
                         height="100%"
                         language="solidity"
-                        value={Input}
+                        value={this.state.answer}
                         options={options}
                         onChange={this.handleChange}
                         editorDidMount={this.editorDidMount}

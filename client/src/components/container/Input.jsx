@@ -21,7 +21,7 @@ class Input extends Component {
                         <AvatorHeader
                             label="Recipe"
                             src="https://pbs.twimg.com/profile_images/1030659217315704833/hZKnb7hm_400x400.jpg"
-                            subheader="プログラミング講師 Lv.1"
+                            subheader="コースの作成者"
                             title="こじりょー"/>
                     </Card>
                 </Grid>

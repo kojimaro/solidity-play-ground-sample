@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import IssueContract from "./contracts/Issue.json";
 import getWeb3 from "./utils/getWeb3";
 import { withStyles } from '@material-ui/core/styles';
-import './components/container/Editor';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Editor from "./components/container/Editor";
 import Input from './components/container/Input';
-import ResultView from './components/presentational/ResultView';
-import SimpleStorageCode from './code/SimpleStorageCode';
+import Output from './components/container/Output';
+import solc from './utils/getSolc';
 
 import "./App.css";
 
@@ -27,11 +26,11 @@ const styles = theme => ({
 })
 
 class App extends Component {
-  state = { 
-      web3: null, 
-      accounts: null, 
-      contract: null,
-      isCorrect: null
+    state = { 
+        web3: null, 
+        accounts: null, 
+        contract: null,
+        isCorrect: null, 
     };
 
   componentDidMount = async () => {
@@ -60,7 +59,30 @@ class App extends Component {
     }
   };
 
-  isCorrect = result => this.setState({isCorrect: result})
+    isCorrect = bool => {
+        this.setState({isCorrect: bool})
+    }
+
+    compile = async(code) => {
+        let input = {
+            language: 'Solidity',
+            sources: {
+                'test.sol': {
+                    content: code
+                }
+            },
+            settings: {
+                outputSelection: {
+                    '*': {
+                        '*': [ '*' ]
+                    }
+                }
+            }
+        }
+        
+        let output = JSON.parse(solc.compile(JSON.stringify(input)))
+        console.log(output);
+    }
 
   saveAchievement = async() => {
       const { accounts, contract } = this.state;
@@ -93,16 +115,15 @@ class App extends Component {
                 </Grid>
                 <Grid item xs={5}>
                     <Paper className={classes.boxCommon}>
-                        <Editor isCorrect={this.isCorrect}/>
+                        <Editor 
+                            isCorrect={this.isCorrect}
+                            compile={this.compile}/>
                     </Paper>
                 </Grid>
                 <Grid item xs={3}>
-                    <Paper className={classes.boxCommon}>
-                        <ResultView 
-                            isCorrect={this.state.isCorrect}
-                            saveAchievement={this.saveAchievement}
-                            code={SimpleStorageCode}/>
-                    </Paper>
+                    <div className={classes.boxCommon}>
+                        <Output isCorrect={this.state.isCorrect}/>
+                    </div>
                 </Grid>
             </Grid>
         </div>
