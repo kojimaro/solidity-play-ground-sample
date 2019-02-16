@@ -26,7 +26,7 @@ const ConsoleCard = props => {
         <Card className={classes.card}>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                    コンソール
+                    デプロイ
                 </Typography>
                 <div style={{visibility:isCorrect === null ? 'hidden':'visible'}}>
                     <Typography component='p' className={classes.text} style={{display:isCorrect ? 'none':'block'}}>
@@ -44,7 +44,7 @@ const ConsoleCard = props => {
                             margin='normal'
                         />
                         <Submit
-                            variant="outlined"
+                            variant="contained"
                             color="primary"
                             label="デプロイ"
                             onClick={handleSubmit}

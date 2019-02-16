@@ -1,58 +1,63 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import TextForm from './TextForm';
+import Submit from './Submit';
 
-const AvatarHeader = props => {
-    const {
-        label,
-        src,
-        subheader,
-        title
-    } = props;
+const styles = theme =>({
+    form: {
+        marginBottom: theme.spacing.unit
+    }
+})
+
+const ContractCard = props => {
+    const { txInterface} = props;
 
     return(
         <Card>
             <CardHeader
-                title="コンソール"/>
+                title="コントラクト"/>
             <CardContent>
-                <Table>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                Enviroment
-                            </TableCell>
-                            <TableCell align="right">Ganache</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                Enviroment
-                            </TableCell>
-                            <TableCell align="right">Ganache</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                Enviroment
-                            </TableCell>
-                            <TableCell align="right">Ganache</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+                {txInterface.map((method, index)=>getTextField(method, index, props))}
             </CardContent>
         </Card>
     );
 }
 
-AvatarHeader.propTypes = {
-    label: PropTypes.string.isRequired,
-    src: PropTypes.string.isRequired,
-    subheader: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+const getTextField = (method, methodId, props) => {
+    const { classes, handleSubmit, handleChange } = props
+
+    return(
+        <div key={methodId} className={classes.form}>
+            <Submit
+                variant="contained"
+                color="default"
+                label={method.name}
+                onClick={handleSubmit}
+                fullWidth={true}
+                dataId={methodId}
+            />
+            {method.inputs.map((input, index)=>{
+                return(
+                    <div key={index}>
+                        <TextForm
+                            type='text'
+                            label={input.name}
+                            id={index.toString()}
+                            value={input.value}
+                            onChange={handleChange}
+                            variant='outlined'
+                            margin='dense'
+                            dataId={methodId}
+                            placeholder={input.type}
+                        />
+                    </div>
+                )
+            })}
+        </div>
+    )
 }
 
-export default AvatarHeader;
+export default withStyles(styles)(ContractCard);

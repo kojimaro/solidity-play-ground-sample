@@ -8,7 +8,6 @@ import Editor from "./components/container/Editor";
 import Input from './components/container/Input';
 import Output from './components/container/Output';
 import solc from './utils/getSolc';
-import { ethers } from 'ethers';
 
 import "./App.css";
 
@@ -33,7 +32,6 @@ class App extends Component {
         contract: null,
         isCorrect: null,
         compiledCode: null,
-        deployedContractAddress: null
     };
 
   componentDidMount = async () => {
@@ -88,44 +86,20 @@ class App extends Component {
         console.log(output);
     }
 
-    deploy = async(rpcUrl) => {
-        if(this.state.isCorrect !== true) return;
-        if(this.state.compiledCode === null) return;
+    saveAchievement = async() => {
+        const { accounts, contract } = this.state;
+        const timestamp = new Date().getTime() / 1000;
 
-        const { contracts } = this.state.compiledCode;
+        const response = await contract.methods.write(
+            0x9E8b0dB8780Bb92a5Ea71bD153d505B8b10Fe2Fd,
+            'YamadaTarou',
+            'ブロックチェーンへの記録処理',
+            'Ethereumブロックチェーンへの書き込み処理を実装しました！',
+            timestamp.toString()
+        ).send({from:accounts[0]});
 
-        try {
-            let provider = new ethers.providers.JsonRpcProvider(rpcUrl)
-            let accounts = await provider.listAccounts()
-            let signer = provider.getSigner(accounts[0])
-            let factory =  ethers.ContractFactory.fromSolidity(
-                contracts['test.sol'].SimpleStorage,
-                signer
-            );
-
-            const contract = await factory.deploy()
-            await contract.deployed()
-
-            this.setState({deployedContractAddress: contract.address})
-        } catch (error) {
-            alert(`Failed.`);
-        }
-    }
-
-  saveAchievement = async() => {
-      const { accounts, contract } = this.state;
-      const timestamp = new Date().getTime() / 1000;
-
-      const response = await contract.methods.write(
-          0x9E8b0dB8780Bb92a5Ea71bD153d505B8b10Fe2Fd,
-          'YamadaTarou',
-          'ブロックチェーンへの記録処理',
-          'Ethereumブロックチェーンへの書き込み処理を実装しました！',
-          timestamp.toString()
-      ).send({from:accounts[0]});
-
-      console.log(response.events.Transfer.returnValues)
-  };
+        console.log(response.events.Transfer.returnValues)
+    };
 
   render() {
     if (!this.state.web3) {
@@ -152,7 +126,8 @@ class App extends Component {
                     <div className={classes.boxCommon}>
                         <Output 
                             isCorrect={this.state.isCorrect}
-                            deploy={this.deploy}/>
+                            compiledCode={this.state.compiledCode}
+                        />
                     </div>
                 </Grid>
             </Grid>

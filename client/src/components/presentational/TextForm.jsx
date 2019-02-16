@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TextField from '@material-ui/core/TextField';
 
-const TextForm = ({label, type, id, value, onChange, variant, margin}) => {
+const TextForm = ({label, type, id, value, onChange, variant, margin, placeholder, dataId}) => {
     return(
         <TextField
             type={type}
@@ -12,7 +12,9 @@ const TextForm = ({label, type, id, value, onChange, variant, margin}) => {
             onChange={onChange}
             variant={variant}
             margin={margin}
+            placeholder={placeholder}
             fullWidth={true}
+            data-id={dataId}
         />
     );
 }

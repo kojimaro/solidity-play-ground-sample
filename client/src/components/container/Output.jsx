@@ -3,21 +3,19 @@ import Grid from '@material-ui/core/Grid';
 import ConsoleCard from '../presentational/ConsoleCard';
 import ContractCard from '../presentational/ContractCard';
 import { ethers } from 'ethers';
+import getJsonRpc from '../../utils/getJsonRpc';
 
 class Output extends Component {
     state = {
         rpcUrl: 'http://127.0.0.1:7545',
-        methodIdentifiers: {},
+        signerAddress: '',
+        ontractAddress: '',
         txInterface: []
     }
 
     handleChange = event => {
         if(event.target.value.match(/[\s\t]/)) return;
         this.setState({rpcUrl: event.target.value})
-    }
-
-    handleSubmit = event => {
-        this.deploy()
     }
 
     deploy = async() => {
@@ -38,6 +36,11 @@ class Output extends Component {
             await deployer.deployed()
 
             await this.generateTxInterface(contracts['test.sol'].SimpleStorage)
+
+            this.setState({
+                signerAddress: signer._address, 
+                contractAddress: deployer.address
+            })
         } catch (error) {
             alert(`Failed.`);
         }
@@ -77,9 +80,8 @@ class Output extends Component {
             return txInterface
         })
 
-        console.log(txInterface)
         this.setState({
-            txInterface: this.state.methods.concat(txInterface)
+            txInterface: this.state.txInterface.concat(txInterface)
         })
     }
 
@@ -89,19 +91,40 @@ class Output extends Component {
         let methodId = Number(event.target.parentElement.parentElement.dataset.id)
         let inputId = Number(event.target.id)
 
-        let methods = this.state.methods.concat()
-        let args = [...methods[methodId].inputs]
-        args[inputId].value = event.target.value
+        let txInterface = this.state.txInterface.concat()
+        let inputs = [...txInterface[methodId].inputs]
+        inputs[inputId].value = event.target.value
 
-        methods[methodId].args = args
-        this.setState({methods}, console.log(this.state.methods))
+        txInterface[methodId].iputs = inputs
+        this.setState({txInterface}, console.log(this.state.txInterface))
     }
 
-    getMethod = event => {
-        let methodId = event.target.parentElement.dataset.id
-    }
+    runTransaction = async(event) => {
+        const { rpcUrl } = this.state
 
-    runTransaction = async(method, inputs) => {
+        let methodId = Number(event.target.parentElement.dataset.id)
+
+        let params = {
+            from: this.state.signerAddress,
+            to: this.state.contractAddress,
+            data: this.state.txInterface[methodId], 
+            value: ''
+        }
+
+        const rpc = getJsonRpc(params)
+        console.log(rpc)
+
+        let response = await fetch(rpcUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: rpc
+        });
+
+        let result = await response.json()
+
+        console.log(result)
     }
 
     render(){
@@ -112,14 +135,14 @@ class Output extends Component {
                 <Grid item xs={12}>
                     <ConsoleCard 
                         handleChange={this.handleChange}
-                        handleSubmit={this.handleSubmit}
+                        handleSubmit={this.deploy}
                         isCorrect={isCorrect}
                         rpcUrl={this.state.rpcUrl}/>
                 </Grid>
                 <Grid item xs={12}>
                     <ContractCard 
                         handleChange={this.changeArgument}
-                        handleSubmit={this.getMethod}
+                        handleSubmit={this.runTransaction}
                         txInterface={this.state.txInterface}/>
                 </Grid>
             </Grid>

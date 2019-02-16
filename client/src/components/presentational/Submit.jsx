@@ -8,7 +8,8 @@ const Submit = props => {
         color,
         label,
         onClick,
-        fullWidth
+        fullWidth,
+        dataId
     } = props;
 
     return(
@@ -18,6 +19,7 @@ const Submit = props => {
             color={color}
             onClick={onClick}
             fullWidth={fullWidth}
+            data-id={dataId}
         >
         {label}
         </Button>

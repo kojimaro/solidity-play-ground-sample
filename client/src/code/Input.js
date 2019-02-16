@@ -5,8 +5,8 @@ const Input =[
     '',
     '   uint storedData;',
     '',
-    '   function set(uint x) public {',
-    '      storedData = x;',
+    '   function set(uint x, uint y) public {',
+    '      storedData = x + y;',
     '   }',
     '}'
 ].join('\n');
