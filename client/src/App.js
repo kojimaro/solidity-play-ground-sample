@@ -34,7 +34,7 @@ class App extends Component {
         compiledCode: null,
     };
 
-  componentDidMount = async () => {
+  /*componentDidMount = async () => {
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -58,7 +58,7 @@ class App extends Component {
       );
       console.error(error);
     }
-  };
+  };*/
 
     isCorrect = bool => {
         this.setState({isCorrect: bool})
@@ -86,7 +86,7 @@ class App extends Component {
         console.log(output);
     }
 
-    saveAchievement = async() => {
+    /*saveAchievement = async() => {
         const { accounts, contract } = this.state;
         const timestamp = new Date().getTime() / 1000;
 
@@ -99,12 +99,12 @@ class App extends Component {
         ).send({from:accounts[0]});
 
         console.log(response.events.Transfer.returnValues)
-    };
+    };*/
 
   render() {
-    if (!this.state.web3) {
+    /*if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
-    }
+    }*/
     const { classes } = this.props;
 
     return (
