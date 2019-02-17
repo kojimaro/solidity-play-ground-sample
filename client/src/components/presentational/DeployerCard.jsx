@@ -13,7 +13,7 @@ const styles = theme => ({
     }
 })
 
-const ConsoleCard = props => {
+const DeployerCard = props => {
     const {
         classes,
         handleChange,
@@ -57,4 +57,4 @@ const ConsoleCard = props => {
     );
 }
 
-export default withStyles(styles)(ConsoleCard);
+export default withStyles(styles)(DeployerCard);

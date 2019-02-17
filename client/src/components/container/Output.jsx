@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import ConsoleCard from '../presentational/ConsoleCard';
+import DeployerCard from '../presentational/DeployerCard';
 import ContractCard from '../presentational/ContractCard';
 import { ethers } from 'ethers';
 import getJsonRpc from '../../utils/getJsonRpc';
@@ -139,7 +139,7 @@ class Output extends Component {
         return(
             <Grid container>
                 <Grid item xs={12}>
-                    <ConsoleCard 
+                    <DeployerCard 
                         handleChange={this.handleChange}
                         handleSubmit={this.deploy}
                         isCorrect={isCorrect}
