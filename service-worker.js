@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/solidity-play-ground-sample/precache-manifest.607b6ab0e383d332720a01a78d1fe74f.js"
+  "/solidity-play-ground-sample/precache-manifest.c45e65036477a7db652479aa669a7e12.js"
 );
 
 workbox.clientsClaim();
