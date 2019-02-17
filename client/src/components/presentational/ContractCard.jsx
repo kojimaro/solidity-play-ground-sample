@@ -1,4 +1,5 @@
 import React from "react";
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,17 +10,33 @@ import Submit from './Submit';
 const styles = theme =>({
     form: {
         marginBottom: theme.spacing.unit
+    },
+    console: {
+        height: '100px',
+        overflow: 'auto',
+        backgroundColor: '#1e1e1e',
+        marginBottom: theme.spacing.unit,
+        padding: theme.spacing.unit
     }
 })
 
 const ContractCard = props => {
-    const { txInterface} = props;
+    const { classes, txInterface, result } = props;
 
     return(
         <Card>
             <CardHeader
                 title="コントラクト"/>
             <CardContent>
+                <div className={classes.console}>
+                    {result.map((log, index)=>{
+                        return(
+                            <Typography component='p' noWrap={true} key={index} color="secondary">
+                                {log}
+                            </Typography>
+                        )
+                    })}
+                </div>
                 {txInterface.map((method, index)=>getTextField(method, index, props))}
             </CardContent>
         </Card>

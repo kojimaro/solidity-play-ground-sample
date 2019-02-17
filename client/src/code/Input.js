@@ -4,9 +4,11 @@ const Input =[
     'contract SimpleStorage {',
     '',
     '   uint storedData;',
+    '   uint storedData02;',
     '',
     '   function set(uint x, uint y) public {',
-    '      storedData = x + y;',
+    '      storedData = x;',
+    '      storedData02 = y;',
     '   }',
     '}'
 ].join('\n');

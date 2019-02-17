@@ -4,13 +4,15 @@ import ConsoleCard from '../presentational/ConsoleCard';
 import ContractCard from '../presentational/ContractCard';
 import { ethers } from 'ethers';
 import getJsonRpc from '../../utils/getJsonRpc';
+import decodePrameters from '../../utils/decode';
 
 class Output extends Component {
     state = {
         rpcUrl: 'http://127.0.0.1:7545',
         signerAddress: '',
         ontractAddress: '',
-        txInterface: []
+        txInterface: [],
+        result: [],
     }
 
     handleChange = event => {
@@ -74,6 +76,7 @@ class Output extends Component {
             txInterface.push({
                 name:methodName, 
                 inputs:args,
+                outputs: method.outputs,
                 signature: contract.evm.methodIdentifiers[methodName],
                 stateMutability: method.stateMutability
             })
@@ -100,19 +103,18 @@ class Output extends Component {
     }
 
     runTransaction = async(event) => {
-        const { rpcUrl } = this.state
+        const { rpcUrl, txInterface } = this.state
 
         let methodId = Number(event.target.parentElement.dataset.id)
 
         let params = {
             from: this.state.signerAddress,
             to: this.state.contractAddress,
-            data: this.state.txInterface[methodId], 
+            data: txInterface[methodId], 
             value: ''
         }
 
         const rpc = getJsonRpc(params)
-        console.log(rpc)
 
         let response = await fetch(rpcUrl, {
             method: "POST",
@@ -122,9 +124,13 @@ class Output extends Component {
             body: rpc
         });
 
-        let result = await response.json()
+        var { result } = await response.json()
 
-        console.log(result)
+        if(txInterface[methodId].outputs.length > 0) {
+            result = JSON.stringify(decodePrameters(txInterface[methodId].outputs, result))
+        }
+
+        this.setState({result: this.state.result.concat([result])})
     }
 
     render(){
@@ -143,7 +149,8 @@ class Output extends Component {
                     <ContractCard 
                         handleChange={this.changeArgument}
                         handleSubmit={this.runTransaction}
-                        txInterface={this.state.txInterface}/>
+                        txInterface={this.state.txInterface}
+                        result={this.state.result}/>
                 </Grid>
             </Grid>
         );
